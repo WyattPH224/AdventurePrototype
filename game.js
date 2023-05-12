@@ -91,40 +91,41 @@ class Room2 extends AdventureScene {
     constructor() {
         super("room2", "Chill time");
     }
-    onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('demo1');
-            });
 
-        this.add.text(this.w * 0.2, this.w * 0.5, "next room")
+    preload() {
+        this.load.path = './assets/';
+        this.load.image('paths', 'two-paths.jpg');
+    }
+
+    onEnter() {
+        this.imageObject = this.add.image(
+            this.w * .375,//x
+            this.h * .5,//y
+            'paths',//imagename
+        )
+        this.imageObject.setScale(3) //resize
+
+        this.add.text(this.w * 0.15, this.h * 0.25, "Bright room")
             .setFontSize(this.s * 2)
+            .setColor(0xFFFFFF)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage("The other choice");
+                this.showMessage("The Bright Path");
             })
             .on('pointerdown', () => {
                 this.gotoScene('room3');
             });
 
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+        this.add.text(this.w * 0.5, this.h * 0.25, "Dark room")
+            .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
+                this.showMessage("The Dark Path");
             })
-            .on('pointerdown', () => this.gotoScene('outro'));
+            .on('pointerdown', () => {
+                this.gotoScene('room4');
+            });
+
     }
 }
 

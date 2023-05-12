@@ -1,10 +1,11 @@
 class Room1 extends AdventureScene {
     constructor() {
-        super("room1", "First Room");
+        super("room1", "Breakfast");
     }
 
     onEnter() {
 
+        /*
         let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -18,9 +19,10 @@ class Room1 extends AdventureScene {
                     yoyo: true,
                     ease: 'Sine.inOut',
                     duration: 100
-                });
+                }); 
             });
-
+            */
+        /*
         let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -38,32 +40,56 @@ class Room1 extends AdventureScene {
                     onComplete: () => key.destroy()
                 });
             })
+        */
 
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
+        let numAte = 0;
+
+        let description = this.add.text(this.w * 0.1, this.w * 0.1, "You've woken up and are really hungry for pancakes.")
             .setFontSize(this.s * 2)
+
+        
+        let pancake = this.add.text(this.w * 0.2, this.w * 0.4, "🥞")
+            .setFontSize(this.s * 5)
             .setInteractive()
             .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
-                } else {
-                    this.showMessage("It's locked. Can you find a key?");
-                }
+                this.showMessage("eat the pancakes");
             })
             .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
-                    this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
-                    this.gotoScene('room2');
-                }
-            })
+                numAte++;
+                this.showMessage("Pancakes eaten: " + numAte);
+                this.tweens.add({
+                    targets: pancake,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    //ease: 'Sine.inOut',
+                    duration: 50
+                });
 
+                if(numAte > 3){
+                    description.text = "Thats probably enough";
+                    let door = this.add.text(this.w * 0.5, this.w * 0.2, "🚪")
+                        .setFontSize(this.s * 20)
+                        .setInteractive()
+                        .on('pointerover', () => {
+                            this.showMessage("Go to your room");
+                        })
+                        .on('pointerdown', () => {
+                            this.showMessage("*squeak*");
+                            this.gotoScene('room2');
+                        })
+                }
+
+                if(numAte > 7) {
+                    description.text = "really?";
+                }
+
+            })
     }
 }
 
 class Room2 extends AdventureScene {
     constructor() {
-        super("room2", "The second room has a long name (it truly does).");
+        super("room2", "Chill time");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
@@ -104,7 +130,7 @@ class Room2 extends AdventureScene {
 
 class Room3 extends AdventureScene {
     constructor() {
-        super("room3", "The second room has a long name (it truly does).");
+        super("room3", "Dinner");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
@@ -143,9 +169,11 @@ class Room3 extends AdventureScene {
     }
 }
 
-class Room4 extends AdventureScene {
+//GAMEPLAY ROOM
+
+class Room4 extends AdventureScene {  
     constructor() {
-        super("room4", "The second room has a long name (it truly does).");
+        super("room4", "Dark Room 1");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
@@ -184,9 +212,10 @@ class Room4 extends AdventureScene {
     }
 }
 
+// PUZZLE ROOM
 class Room5 extends AdventureScene {
     constructor() {
-        super("room5", "The second room has a long name (it truly does).");
+        super("room5", "Dark Room 2");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
@@ -227,7 +256,7 @@ class Room5 extends AdventureScene {
 
 class Room6 extends AdventureScene {
     constructor() {
-        super("room6", "The second room has a long name (it truly does).");
+        super("room6", "Escape Room");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")

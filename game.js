@@ -1,6 +1,6 @@
-class Demo1 extends AdventureScene {
+class Room1 extends AdventureScene {
     constructor() {
-        super("demo1", "First Room");
+        super("room1", "First Room");
     }
 
     onEnter() {
@@ -54,16 +54,180 @@ class Demo1 extends AdventureScene {
                     this.loseItem("key");
                     this.showMessage("*squeak*");
                     door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
+                    this.gotoScene('room2');
                 }
             })
 
     }
 }
 
-class Demo2 extends AdventureScene {
+class Room2 extends AdventureScene {
     constructor() {
-        super("demo2", "The second room has a long name (it truly does).");
+        super("room2", "The second room has a long name (it truly does).");
+    }
+    onEnter() {
+        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("You've got no other choice, really.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('demo1');
+            });
+
+        this.add.text(this.w * 0.2, this.w * 0.5, "next room")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("The other choice");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room3');
+            });
+
+        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('*giggles*');
+                this.tweens.add({
+                    targets: finish,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    ease: 'Sine.inOut',
+                    duration: 500
+                });
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+    }
+}
+
+class Room3 extends AdventureScene {
+    constructor() {
+        super("room3", "The second room has a long name (it truly does).");
+    }
+    onEnter() {
+        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("You've got no other choice, really.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('demo1');
+            });
+        
+        this.add.text(this.w * 0.5, this.w * 0.5, "next room")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("The other choice");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room4');
+            });
+
+        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('*giggles*');
+                this.tweens.add({
+                    targets: finish,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    ease: 'Sine.inOut',
+                    duration: 500
+                });
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+    }
+}
+
+class Room4 extends AdventureScene {
+    constructor() {
+        super("room4", "The second room has a long name (it truly does).");
+    }
+    onEnter() {
+        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("You've got no other choice, really.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('demo1');
+            });
+
+        this.add.text(this.w * 0.5, this.w * 0.5, "next room")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("The other choice");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room5');
+            });
+
+        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('*giggles*');
+                this.tweens.add({
+                    targets: finish,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    ease: 'Sine.inOut',
+                    duration: 500
+                });
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+    }
+}
+
+class Room5 extends AdventureScene {
+    constructor() {
+        super("room5", "The second room has a long name (it truly does).");
+    }
+    onEnter() {
+        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("You've got no other choice, really.");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('demo1');
+            });
+
+        this.add.text(this.w * 0.5, this.w * 0.5, "next room")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("The other choice");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room6');
+            });
+
+        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('*giggles*');
+                this.tweens.add({
+                    targets: finish,
+                    x: this.s + (this.h - 2 * this.s) * Math.random(),
+                    y: this.s + (this.h - 2 * this.s) * Math.random(),
+                    ease: 'Sine.inOut',
+                    duration: 500
+                });
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+    }
+}
+
+class Room6 extends AdventureScene {
+    constructor() {
+        super("room6", "The second room has a long name (it truly does).");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
@@ -101,7 +265,7 @@ class Intro extends Phaser.Scene {
         this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('room1'));
         });
     }
 }
@@ -125,7 +289,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Demo1, Demo2, Outro],
+    scene: [Intro, Room1, Room2, Room3, Room4, Room5, Room6, Outro],
     title: "Adventure Game",
 });
 

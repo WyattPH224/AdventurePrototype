@@ -45,16 +45,13 @@ class Room1 extends AdventureScene {
 
         let numAte = 0;
 
-        let description = this.add.text(this.w * 0.1, this.w * 0.1, "You've woken up and are really hungry for pancakes.")
+        let description = this.add.text(this.w * 0.1, this.w * 0.1, "You've woken up and are really hungry for pancakes. \nBetter eat before heading to school!")
             .setFontSize(this.s * 2)
 
         
         let pancake = this.add.text(this.w * 0.2, this.w * 0.4, "🥞")
             .setFontSize(this.s * 5)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("eat the pancakes");
-            })
             .on('pointerdown', () => {
                 numAte++;
                 this.showMessage("Pancakes eaten: " + numAte);
@@ -71,13 +68,11 @@ class Room1 extends AdventureScene {
                     let door = this.add.text(this.w * 0.5, this.w * 0.2, "🚪")
                         .setFontSize(this.s * 20)
                         .setInteractive()
-                        .on('pointerover', () => {
-                            this.showMessage("Go to your room");
-                        })
                         .on('pointerdown', () => {
                             this.showMessage("*squeak*");
                             this.gotoScene('room2');
                         })
+                    this.describe(door, "Go to your room");
                 }
 
                 if(numAte > 7) {
@@ -85,16 +80,8 @@ class Room1 extends AdventureScene {
                 }
 
             })
-
-        this.add.text(this.w * 0.5, this.w * 0.5, "next room")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("The other choice");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('room3');
-            });
+        this.describe(pancake,"eat the pancakes");
+        
     }
 }
 
@@ -114,40 +101,43 @@ class Room2 extends AdventureScene {
 
 
         //go to math room
-        this.add.text(this.w * 0.15, this.h * 0.25, "Math Class")
+        let mathDoor = this.add.text(this.w * 0.15, this.h * 0.25, "Math Class")
             .setFontSize(this.s * 2)
             .setColor(0xFFFFFF)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Door to Math Class");
-            })
             .on('pointerdown', () => {
                 this.gotoScene('room3');
             });
+        
+        if(this.hasItem("Math Pass")){
+            mathDoor.visible = false;
+        }
 
         // go to english room
-        this.add.text(this.w * 0.35, this.h * 0.25, "English class")
+        let englishDoor = this.add.text(this.w * 0.35, this.h * 0.25, "English class")
             .setFontSize(this.s * 2)
             .setColor(0xFFFFFF)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Door to English Class");
-            })
             .on('pointerdown', () => {
                 this.gotoScene('room4');
             });
 
         //go to pe room
-        this.add.text(this.w * 0.6, this.h * 0.25, "PE")
+        let peDoor = this.add.text(this.w * 0.6, this.h * 0.25, "PE")
             .setFontSize(this.s * 2)
             .setColor(0xFFFFFF)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Door to Gym Class");
-            })
             .on('pointerdown', () => {
                 this.gotoScene('room5');
             });
+        
+        if(this.hasItem("Gym Pass")){
+            peDoor.visible = false;
+        }
+        
+        this.describe(mathDoor, "Door to Math Class");
+        this.describe(englishDoor, "Door to English Class");
+        this.describe(peDoor, "Door to Gym Class")
 
     }
 }
@@ -201,14 +191,11 @@ class Room3 extends AdventureScene {
         let choice1text = this.add.text(this.w * 0.25, this.h * 0.5, `${choice1}`)
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Is this the right answer?");
-            })
             .on('pointerdown', () => {
                 if(choice1 == rightAnswer) {
                     this.showMessage("Correct! \n You received your math pass!");
                     choice1text.setText("✅");
-                    this.gainItem("mathPass");
+                    this.gainItem("Math Pass");
                 }
                 else {
                     this.showMessage("Wrong!");
@@ -220,14 +207,11 @@ class Room3 extends AdventureScene {
         let choice2text = this.add.text(this.w * 0.35, this.h * 0.5, `${choice2}`)
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Is this the right answer?");
-            })
             .on('pointerdown', () => {
                 if(choice2 == rightAnswer) {
                     this.showMessage("Correct! \n You received your math pass!");
                     choice2text.setText("✅");
-                    this.gainItem("mathPass");
+                    this.gainItem("Math Pass");
                 }
                 else {
                     this.showMessage("Wrong!");
@@ -239,14 +223,11 @@ class Room3 extends AdventureScene {
         let choice3text = this.add.text(this.w * 0.45, this.h * 0.5, `${choice3}`)
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Is this the right answer?");
-            })
             .on('pointerdown', () => {
                 if(choice3 == rightAnswer) {
                     this.showMessage("Correct! \n You received your math pass!");
                     choice3text.setText("✅");
-                    this.gainItem("mathPass");
+                    this.gainItem("Math Pass");
                 }
                 else {
                     this.showMessage("Wrong!");
@@ -260,15 +241,18 @@ class Room3 extends AdventureScene {
 
 
         
-        this.add.text(this.w * 0.5, this.w * 0.5, "Back to the hall")
+        let finish = this.add.text(this.w * 0.5, this.w * 0.5, "Back to the hall")
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Have you passed yet?");
-            })
             .on('pointerdown', () => {
                 this.gotoScene('room2');
             });
+
+        this.describe(choice1text, "Is this the right answer?");
+        this.describe(choice2text, "Maybe this is the answer?");
+        this.describe(choice3text, "Perhaps this is the answer?");
+        this.describe(finish, "Have you passed yet?");
+
        
     }
 }
@@ -320,46 +304,61 @@ class Room4 extends AdventureScene {
 // grade based on click speed
 class Room5 extends AdventureScene {
     constructor() {
-        super("room5", "Dark Room 2");
+        super("room5", "Gym class");
     }
     onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(100, 0xff4d4d, 1);    //linewidth, color, opacity
+        let track = this.graphics.lineBetween(this.w * 0.1, this.w * .35, this.w * 0.55, this.w * .35); //x1, y1, x2, y2
+        this.graphics.lineStyle(100, 0x660000, 1)
+        this.graphics.lineBetween(this.w * 0.1, this.w * .35, this.w * 0.135, this.w * .35);
+
+        
+        let description = this.add.text(this.w * 0.35, this.w * 0.1, "Race to the end!")
+        .setFontSize(this.s * 2);
+
+        let trackLength = (this.w * 0.55) - (this.w * 0.1); 
+
+        let leave = this.add.text(this.w * 0.5, this.w * 0.5, "Back to the hall")
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
             .on('pointerdown', () => {
-                this.gotoScene('demo1');
+                this.gotoScene('room2');
             });
-
-        this.add.text(this.w * 0.5, this.w * 0.5, "next room")
-            .setFontSize(this.s * 2)
+        leave.visible = false;
+        //running character
+        let runner = this.add.text(this.w * 0.55, this.w * 0.3, "🏃")
+            .setFontSize(this.s * 4)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("The other choice");
-            })
             .on('pointerdown', () => {
-                this.gotoScene('room6');
+                runner.x = runner.x - 5;
+                if(runner.x <= this.w * 0.1){
+                    this.showMessage('Congrats! You win!');
+                    this.gainItem("Gym Pass");
+                    leave.visible = true;
+                }
+                if(runner.x < trackLength * .85) {
+                    description.setText("Keep Going!");
+                }if(runner.x < trackLength * .65) {
+                    description.setText("Halfway There!");
+                }if(runner.x < trackLength * .35) {
+                    description.setText("So Close!");
+                }
             });
-
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
-            })
-            .on('pointerdown', () => this.gotoScene('outro'));
+        
+        this.describe(runner, "Click to Run!");
+        this.describe(track, 'The outside running track');
+        this.describe(leave, 'Have you passed yet?');
+       
+        
+        
+        
+        
     }
 }
 
-//Bad end room
+//end room
 
 class Room6 extends AdventureScene {
     constructor() {

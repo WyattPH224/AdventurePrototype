@@ -158,4 +158,10 @@ class AdventureScene extends Phaser.Scene {
             yoyo: true,
         });
     }
+
+    describe(obj, desc) {
+        obj.on('pointerover', () => {
+            this.showMessage(desc);
+        })
+    }
 }

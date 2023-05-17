@@ -121,6 +121,10 @@ class Room2 extends AdventureScene {
             .on('pointerdown', () => {
                 this.gotoScene('room4');
             });
+        if(this.hasItem("English Pass")){
+            englishDoor.visible = false;
+        }
+    
 
         //go to pe room
         let peDoor = this.add.text(this.w * 0.6, this.h * 0.25, "PE")
@@ -133,6 +137,21 @@ class Room2 extends AdventureScene {
         
         if(this.hasItem("Gym Pass")){
             peDoor.visible = false;
+        }
+
+
+        let graduationDoor = this.add.text(this.w * 0.25, this.h * 0.65, "🚪")
+            .setFontSize(this.s * 20)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.showMessage("*squeak*");
+                this.gotoScene('outro');
+            })
+            this.describe(graduationDoor, "Time to graduate");
+        graduationDoor.visible = false;
+
+        if(this.hasItem("Gym Pass") && this.hasItem("English Pass") && this.hasItem("Math Pass")){
+            graduationDoor.visible = true;
         }
         
         this.describe(mathDoor, "Door to Math Class");
@@ -236,7 +255,7 @@ class Room3 extends AdventureScene {
             });
         
 
-        this.add.text(this.w * 0.15, this.h * 0.15, "Answer this difficult question to pass Math Class!")
+        this.add.text(this.w * 0.1, this.h * 0.15, "Answer this difficult question to pass Math Class!")
             .setFontSize(this.s * 2);
 
 
@@ -258,45 +277,37 @@ class Room3 extends AdventureScene {
 }
 
 //English room
-// Crossword puzzle? 
 class Room4 extends AdventureScene {  
     constructor() {
-        super("room4", "Dark Room 1");
+        super("room4", "English Class");
     }
     onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+        this.add.text(this.w * 0.25, this.h * 0.35, "Today in english class, you must\nwrite a 500 word essay on\nthe book you forgot to read.")
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
             .on('pointerdown', () => {
-                this.gotoScene('demo1');
+                this.showMessage("The book was Dante's Divine Comedy\nMaybe you can think of some things from\nThat one game Devil May Cry");
             });
 
-        this.add.text(this.w * 0.5, this.w * 0.5, "next room")
+        let finish = this.add.text(this.w * 0.5, this.w * 0.5, "Back to the hall")
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("The other choice");
-            })
             .on('pointerdown', () => {
-                this.gotoScene('room5');
+                this.gotoScene('room2');
             });
+        finish.visible = false;
 
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+        let answer = this.add.text(this.w * 0.25, this.h * 0.5, "Luckily, you have technology")
+            .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
-            })
-            .on('pointerdown', () => this.gotoScene('outro'));
+            .on('pointerdown', () => {
+                this.showMessage("You used ChatGPT! Congrats, You Passed!");
+                this.gainItem("English Pass");
+                finish.visible = true;
+            });
+        
+        this.describe(answer, "Use the power of technology");
+
     }
 }
 
@@ -333,6 +344,7 @@ class Room5 extends AdventureScene {
             .setInteractive()
             .on('pointerdown', () => {
                 runner.x = runner.x - 5;
+                this.shake(runner);
                 if(runner.x <= this.w * 0.1){
                     this.showMessage('Congrats! You win!');
                     this.gainItem("Gym Pass");
@@ -360,47 +372,16 @@ class Room5 extends AdventureScene {
 
 //end room
 
-class Room6 extends AdventureScene {
-    constructor() {
-        super("room6", "Escape Room");
-    }
-    onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('demo1');
-            });
-
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
-            })
-            .on('pointerdown', () => this.gotoScene('outro'));
-    }
-}
-
 class Intro extends Phaser.Scene {
     constructor() {
         super('intro')
     }
     create() {
-        this.add.text(50,50, "Adventure awaits!").setFontSize(50);
-        this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
+        this.add.text(50,50, "Wake up! Its time for school!").setFontSize(50);
+        this.add.text(50,100, "Click anywhere to begin.").setFontSize(35);
         this.input.on('pointerdown', () => {
-            this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('room1'));
+            this.cameras.main.fade(500, 0,0,0);
+            this.time.delayedCall(500, () => this.scene.start('room1'));
         });
     }
 }
@@ -410,8 +391,8 @@ class Outro extends Phaser.Scene {
         super('outro');
     }
     create() {
-        this.add.text(50, 50, "That's all!").setFontSize(50);
-        this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
+        this.add.text(50, 50, "Congrats! You've passed your classes. \nUnfortunately you were caught cheating \nand now have to retake all your classes.\nBetter luck next time").setFontSize(50);
+        this.add.text(50, 300, "Click anywhere to restart.").setFontSize(30);
         this.input.on('pointerdown', () => this.scene.start('intro'));
     }
 }
@@ -424,7 +405,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Room1, Room2, Room3, Room4, Room5, Room6, Outro],
+    scene: [Intro, Room1, Room2, Room3, Room4, Room5, Outro],
     title: "Adventure Game",
 });
 

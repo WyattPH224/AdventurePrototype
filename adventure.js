@@ -151,11 +151,10 @@ class AdventureScene extends Phaser.Scene {
     shake(obj) {
         this.tweens.add({
             targets: obj,
-            x: '+=10',
             y: '+=10',
-            ease: 'Power0',
-            duration: 50,
+            ease: 'Bounce.inOut',
             yoyo: true,
+            duration: 25,
         });
     }
 

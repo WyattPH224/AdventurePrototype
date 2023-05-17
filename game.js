@@ -1,3 +1,4 @@
+//First room, eat breakfast
 class Room1 extends AdventureScene {
     constructor() {
         super("room1", "Breakfast");
@@ -84,66 +85,7 @@ class Room1 extends AdventureScene {
                 }
 
             })
-    }
-}
 
-class Room2 extends AdventureScene {
-    constructor() {
-        super("room2", "Chill time");
-    }
-
-    preload() {
-        this.load.path = './assets/';
-        this.load.image('paths', 'two-paths.jpg');
-    }
-
-    onEnter() {
-        this.imageObject = this.add.image(
-            this.w * .375,//x
-            this.h * .5,//y
-            'paths',//imagename
-        )
-        this.imageObject.setScale(3) //resize
-
-        this.add.text(this.w * 0.15, this.h * 0.25, "Bright room")
-            .setFontSize(this.s * 2)
-            .setColor(0xFFFFFF)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("The Bright Path");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('room3');
-            });
-
-        this.add.text(this.w * 0.5, this.h * 0.25, "Dark room")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("The Dark Path");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('room4');
-            });
-
-    }
-}
-
-class Room3 extends AdventureScene {
-    constructor() {
-        super("room3", "Dinner");
-    }
-    onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
-            })
-            .on('pointerdown', () => {
-                this.gotoScene('demo1');
-            });
-        
         this.add.text(this.w * 0.5, this.w * 0.5, "next room")
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -151,27 +93,188 @@ class Room3 extends AdventureScene {
                 this.showMessage("The other choice");
             })
             .on('pointerdown', () => {
-                this.gotoScene('room4');
+                this.gotoScene('room3');
             });
-
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
-            })
-            .on('pointerdown', () => this.gotoScene('outro'));
     }
 }
 
-//GAMEPLAY ROOM
+//second room, arrive at school, choose classes: Math, English, PE
 
+class Room2 extends AdventureScene {
+    constructor() {
+        super("room2", "Hallway");
+    }
+
+    onEnter() {
+
+        //3 doors
+        //if grade item for class is in inventory, dont show door
+        //if all three are in inventory, show door to end
+        //they can retake the class to get a better score should they want to
+
+
+        //go to math room
+        this.add.text(this.w * 0.15, this.h * 0.25, "Math Class")
+            .setFontSize(this.s * 2)
+            .setColor(0xFFFFFF)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Door to Math Class");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room3');
+            });
+
+        // go to english room
+        this.add.text(this.w * 0.35, this.h * 0.25, "English class")
+            .setFontSize(this.s * 2)
+            .setColor(0xFFFFFF)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Door to English Class");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room4');
+            });
+
+        //go to pe room
+        this.add.text(this.w * 0.6, this.h * 0.25, "PE")
+            .setFontSize(this.s * 2)
+            .setColor(0xFFFFFF)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Door to Gym Class");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room5');
+            });
+
+    }
+}
+
+// Math room
+// just actually math problems
+class Room3 extends AdventureScene {
+    constructor() {
+        super("room3", "Math Class");
+    }
+    onEnter() {
+        //let it be known I was attempting to make this cooler than it was but its 3 am and I just gotta get it done at this point :c Maybe revist later
+        //and see if you can fix it
+        let rng = Phaser.Math.RND;
+        //create random equasion
+
+        function makeStuff() {
+            let equasion = `${rng.between(1, 1000)} + ${rng.between(1,1000)}`;
+            console.log(equasion);
+            //make sure one of them is the actual answer
+            //rest are random
+            //create 3 possible answers
+            
+            console.log(eval(equasion));
+            let rightAnswer = eval(equasion);
+            let wrong1 = rng.between(1, rightAnswer * 2);
+            while(rightAnswer == wrong1) {
+                wrong1 = rng.between(1, rightAnswer * 2);
+            }
+            let wrong2 = rng.between(1, rightAnswer * 2);
+            while(rightAnswer == wrong2) {
+                wrong2 = rng.between(1, rightAnswer * 2);
+            }
+            let answers = [rightAnswer, wrong1, wrong2];
+            console.log(answers);
+
+            return [equasion, answers]
+        }
+        
+
+        let stuff = makeStuff();
+        let equasion = stuff[0];
+        let answers = stuff[1];
+        let rightAnswer = eval(equasion);
+
+
+        this.add.text(this.w * 0.30, this.h * 0.3, `${equasion}`)
+            .setFontSize(this.s * 4);
+
+        let choice1 = rng.shuffle(answers).pop()
+        let choice1text = this.add.text(this.w * 0.25, this.h * 0.5, `${choice1}`)
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Is this the right answer?");
+            })
+            .on('pointerdown', () => {
+                if(choice1 == rightAnswer) {
+                    this.showMessage("Correct! \n You received your math pass!");
+                    choice1text.setText("✅");
+                    this.gainItem("mathPass");
+                }
+                else {
+                    this.showMessage("Wrong!");
+                    this.shake(choice1text);
+                }
+            });
+
+        let choice2 = rng.shuffle(answers).pop()
+        let choice2text = this.add.text(this.w * 0.35, this.h * 0.5, `${choice2}`)
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Is this the right answer?");
+            })
+            .on('pointerdown', () => {
+                if(choice2 == rightAnswer) {
+                    this.showMessage("Correct! \n You received your math pass!");
+                    choice2text.setText("✅");
+                    this.gainItem("mathPass");
+                }
+                else {
+                    this.showMessage("Wrong!");
+                    this.shake(choice2text);
+                }
+            });
+
+        let choice3 = rng.shuffle(answers).pop()
+        let choice3text = this.add.text(this.w * 0.45, this.h * 0.5, `${choice3}`)
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Is this the right answer?");
+            })
+            .on('pointerdown', () => {
+                if(choice3 == rightAnswer) {
+                    this.showMessage("Correct! \n You received your math pass!");
+                    choice3text.setText("✅");
+                    this.gainItem("mathPass");
+                }
+                else {
+                    this.showMessage("Wrong!");
+                    this.shake(choice3text);
+                }
+            });
+        
+
+        this.add.text(this.w * 0.15, this.h * 0.15, "Answer this difficult question to pass Math Class!")
+            .setFontSize(this.s * 2);
+
+
+        
+        this.add.text(this.w * 0.5, this.w * 0.5, "Back to the hall")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Have you passed yet?");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('room2');
+            });
+       
+    }
+}
+
+//English room
+// Crossword puzzle? 
 class Room4 extends AdventureScene {  
     constructor() {
         super("room4", "Dark Room 1");
@@ -213,7 +316,8 @@ class Room4 extends AdventureScene {
     }
 }
 
-// PUZZLE ROOM
+// PE room
+// grade based on click speed
 class Room5 extends AdventureScene {
     constructor() {
         super("room5", "Dark Room 2");
@@ -254,6 +358,8 @@ class Room5 extends AdventureScene {
             .on('pointerdown', () => this.gotoScene('outro'));
     }
 }
+
+//Bad end room
 
 class Room6 extends AdventureScene {
     constructor() {
